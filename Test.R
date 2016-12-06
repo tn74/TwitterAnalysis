@@ -5,17 +5,20 @@ library(magrittr)
 
 
 # First function called, creates the nodes of the network
-createGraph = function(nodes = 10){
-  eg = make_empty_graph(nodes) 
-  eg = set_vertex_attr(eg, "knownState",V(eg), FALSE) 
-  eg = set_vertex_attr(eg, "color", V(eg), "red")
+createGraph = function(nodes = 10, distribution){
+  eg = make_empty_graph(nodes) %>%
+    set_vertex_attr("knownState",V(.), FALSE) %>%
+    set_vertex_attr("color", V(.), "red")
+  for (i in 1:length(V(eg))){
+    print('hello')
+    eg = set_vertex_attr(eg, "support", i, sample(distribution$col,1))
+  }
   return(eg)
 }
 
 # Create a number of edges stemming from a given node 
 createEdges = function(g, nodeIndex, numConnections){
   numNodes = length(V(g))
-  print(numNodes)
   if (numNodes<numConnections){
     stop("More connections than nodes!")
   }
@@ -30,25 +33,40 @@ createEdges = function(g, nodeIndex, numConnections){
 # Sets a node to be "known" and changes the fill color
 becomeKnown = function(g, nodeIndex){
   g = set_vertex_attr(g,"knownState",nodeIndex, TRUE) %>%
-    set_vertex_attr("color", nodeIndex,"green")
+    set_vertex_attr("color", nodeIndex, "green")
   return(g)
 }
+
 
 # Plots graphs as we wish
 plotGraph = function (g){
   plot(g, edge.arrow.size=.5, vertex.label.color="black", vertex.label.dist=1)
 }
 
-graphObj = createGraph(50)
+dist = data.frame(col = rnorm(100))
+graphObj = createGraph(5000,dist)
 graphObj = becomeKnown(graphObj,10)
 for (i in 1:length(V(graphObj))){
   graphObj = createEdges(graphObj,i,5)
 }
+#plot(graphObj)
+#convertToDF(graphObj)
+attr = get.vertex.attribute(graphObj,index = V(graphObj))
 
 
-wc <- cluster_walktrap(graphObj$known)
-members <- membership(wc)
-graphObj_d3 = igraph_to_networkD3(graphObj, group = members)
-forceNetwork(Links = graphObj_d3$links, Nodes = graphObj_d3$nodes,
-             Source = 'source', Target = 'target',
-             NodeID = 'name', Group = 'group')
+
+
+
+
+
+
+
+
+
+
+# wc <- cluster_walktrap(graphObj$known)
+# members <- membership(wc)
+# graphObj_d3 = igraph_to_networkD3(graphObj, group = members)
+# forceNetwork(Links = graphObj_d3$links, Nodes = graphObj_d3$nodes,
+#              Source = 'source', Target = 'target',
+#              NodeID = 'name', Group = 'group')
