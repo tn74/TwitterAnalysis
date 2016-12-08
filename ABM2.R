@@ -51,7 +51,7 @@ sdCon = 5       #Standard deviation of followers on twitter
 trigger = 1     
 runTime = 24
 
-distSupport = data.frame(col = rsnorm(1000, mean = 0.1, sd = 0.15))
+distSupport = data.frame(col = rsnorm(1000, mean = 0.1, sd = 0.13))
 distPressure = data.frame(col = rsnorm(1000, mean = 0, sd = .1))
 distConnection = data.frame(col = round(rsnorm(1000, mean = avgCon, sd = sdCon, xi = 20)))
 ggplot(distConnection, aes(x=col)) +geom_histogram()
@@ -77,7 +77,7 @@ for (time in 1:runTime){
         curNodeSupport = get.vertex.attribute(gr,"support",nodeIndex)
         curNeighborSupprot = get.vertex.attribute(gr,"support", neighbor)
         pressure = get.vertex.attribute(gr,"pressure", neighbor)
-        gr = set.vertex.attribute(gr,"support",neighbor,curNeighborSupprot+curNodeSupport*pressure)
+        gr = set.vertex.attribute(gr,"support",neighbor,curNeighborSupprot+curNodeSupport*abs(pressure))
         if (sum(grepl(neighbor, fireNodeNext)==TRUE)==0){
           fireNodeNext = c(fireNodeNext, neighbor)
           print(fireNodeNext)
@@ -93,6 +93,27 @@ for (time in 1:runTime){
   allData$numUnk[time] = sum(attr$knownState==FALSE)
   allData$numKnown [time]= people-allData$numUnk[time]
   allData$numSpreader[time] = length(fireNode)
+  sumPos = 0
+  sumNeg = 0
+  totPos = 0
+  totNeg = 0
+  for (i in attr$support){
+    if (i>0){
+      sumPos = sumPos+i
+      totPos = totPos + 1
+    }
+    else if (i<0){
+      sumNeg = sumNeg + i
+      totNeg = totNeg + 1 
+    }
+  }
+  allData$avgPosSupport[time] = sumPos/totPos
+  allData$avgNegSupport[time] = sumNeg/totNeg
+  # opinion = data.frame(op = get.vertex.attribute(gr,"support",V(gr)))
+  # opPos = filter(attr, support >= 0)
+  # opNeg = filter(attr, support <= 0)
+  # allData$avgPosSupport = mean(opPos[[1]])
+  # allData$avgNegSupport = mean(opNeg[[1]])
   allData$avgSupport[time] = mean(get.vertex.attribute(gr,"support",V(gr)))
   allData$nonNeutral[time] = mean(abs(get.vertex.attribute(gr,"support",V(gr))))
   fireNode = fireNodeNext%>%unique()
