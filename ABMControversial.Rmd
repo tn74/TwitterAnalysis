@@ -18,7 +18,7 @@ library(grid)
 library(gridExtra)
 ```
 
-# Most People are Opposed
+# It's Controversial
 ```{r}
 createGraph = function(nodes = 10, distribution, distPressure){
   eg = make_empty_graph(nodes) %>%
