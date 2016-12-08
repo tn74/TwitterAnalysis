@@ -18,7 +18,7 @@ library(grid)
 library(gridExtra)
 ```
 
-#Everyone's Neutral
+# Most People are Opposed
 ```{r}
 createGraph = function(nodes = 10, distribution, distPressure){
   eg = make_empty_graph(nodes) %>%
@@ -65,10 +65,10 @@ avgCon = 10     #Average number of followers on twitter
 sdCon = 5       #Standard deviation of followers on twitter
 trigger = 1     
 runTime = 24
-supMean = 0
+supMean = 0.15
 supSD = 0.1
 
-distSupport = data.frame(col = rsnorm(1000, supMean, supSD))
+distSupport = data.frame(col = c(rsnorm(1000, supMean, supSD),rsnorm(1000, -supMean, supSD)))
 distPressure = data.frame(col = rsnorm(1000, mean = 0, sd = .1))
 
 distConnection = data.frame(col = round(rsnorm(1000, mean = avgCon, sd = sdCon, xi = 20)))
@@ -92,8 +92,10 @@ forceNetwork(Links = graphObj_d3$links, Nodes = graphObj_d3$nodes,
 ```
 
 ![Our network visualized by the networkd3 package](Network.png)
+
+
 #### Distribution of Support:
-mean  = 0     
+mean  = -0.1     
 sd = 0.1
 ```{r}
 gr = createGraph(people,distSupport,distPressure)
