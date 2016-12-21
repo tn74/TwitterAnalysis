@@ -22,7 +22,7 @@ library(gridExtra)
 # It's Controversial
 
 # Intro
-The following is part of our final project for our Mathematical Models in Biology class. The class is a part of Duke's Focus program, which groups students into "clusters" that live together and take classes with a similar interdisciplinary focus. Our cluster, "What If?" focuses on classes related to understand the past and predict the future. This class specifically focuses on biological models, but as it turns out, the spread of information can be modeled similarly to the spread of disease (however ironic that is).     
+The following is part of our final project for our Mathematical Models in Biology class. The class is a part of Duke's Focus program, which groups students into "clusters" that live together and take classes with a similar interdisciplinary focus. Our cluster, "What If?" focuses on classes related to understanding the past and predicting the future. This class specifically focuses on biological models, but as it turns out, the spread of information can be modeled similarly to the spread of disease (however ironic that is).     
 
 In this project, we were tasked with creating an Agent Based Model (ABM) to model the spread of rumors on Twitter. An ABM is a program that creates a network to model interactions between agents. We created a network using R's igraph package where vertices represent Twitter users, and edges represent the connections between them.     
 
@@ -101,9 +101,9 @@ Above are the graphs for the three parameters in our model.
 
 1. Every vertex has an initial opinion about the rumor, and its opinion is randomly assigned as a numeric value selected from the "Distribution of Support" graph.    
     
-2. Every vertex's opinion changes slightly according to what they have heard from other people. But in real life, some people are more stubborn than others. To account for that, our model assigns us an "Ability to Pressured" factor to each vertex via the Distribution of Pressure graph. Each vertex is randomly assigned a value from that graph, and the closer the value is to 0, the more "stubborn" that vertex is.    
+2. Every vertex's opinion changes slightly according to what they have heard from other people. But in real life, some people are more stubborn than others. To account for that, our model assigns us an "Ability to be Pressured" factor to each vertex via the "Distribution of Pressure"" graph. Each vertex is randomly assigned a value from that graph, and the closer the value is to 0, the more "stubborn" that vertex is.    
     
-3. Every vertex is connected to number of nodes, n, where n is a randomly selected value from the distribution graphed in "Distribution of Number of Connections." The right skew of this distribution mimics the structure of Twitter where most people have hundreds of followers, but some celebrities have thousands or millions.     
+3. Every vertex is connected to n number of nodes where n is a randomly selected value from the distribution graphed in "Distribution of Number of Connections." The right skew of this distribution mimics the structure of Twitter where most people have hundreds of followers, but some celebrities have thousands or millions.     
     
 Since we are graphing a controversial rumor, we have made our support distribution bimodal - to represent two sides of an argument that both have semi-strong opinions about the subject. This is applicable to many real life scenarios, like the 2016 election that divided the USA.     
 
@@ -230,7 +230,7 @@ grid.arrange(g1,g2,g3,g4,g5,g6, ncol=2)
 ```
 
 
-We ran our program with varying initial support distribution corresponding to different types of rumors, and plotted several variables, whose graphs that served as our results. On every graph, the x-axis is “t” for time, in hours. The y-variables change from graph to graph: below, we list each graph in the panel and state what is being plotted.     
+We ran our program with varying initial support distribution corresponding to different types of rumors, and plotted several variables, whose graphs then served as our results. On every graph, the x-axis is “t” for time, in hours. The y-variables change from graph to graph. Below, we list each graph in the panel and state what is being plotted.     
 
 o	Knowledge of Rumor – This graphs how many people are aware of the rumor at any given time. Two lines are plotted to show how many know and don’t know.     
     
@@ -245,7 +245,7 @@ o	Positive Support – Graphs the average support for every vertex that has a po
 o	Negative Support – Same as positive support, but graphs the average for all vertices with a negative support value.
       
     
-Applying the model to the American election, the model seems unfortunately accurate. The positive leaning population becomes more positive as time goes on in this rumor, and the negative side also becomes more negative. The overall opinion of society, however, does not change. It zig-zags around 0, but never meaningfully increases in any single direction. Thus, society becomes more and more divided with no resolution to their conflict.    
+Applying the model to the American election, the model seems unfortunately accurate. The positive leaning population becomes more positive as time goes on in this rumor, and the negative side also becomes more negative. The overall opinion of society, however, does not change. It wavers around 0, but never meaningfully increases in any single direction. Thus, society becomes more and more divided with no resolution to their conflict.    
     
-Another interesting observation of this model is the number of spreaders and rate at which people become aware of the rumor.  We ran this model for a rumor that society generally had strong positive opinions about. In that scenario, everyone knew about the rumor in 24 hours and there were around 80 spreaders after 24 hours. In this case, nearly everyone knows about the rumor in 10-15 hours and the number of spreaders at the end of the 24 hour period is in the range 300-400. Thus, we can conclude from our model that controversial rumors spread much faster and more destructively (because of polarization) than rumors that most people can agree on.
+Another interesting observation of this model is the number of spreaders and rate at which people become aware of the rumor. We ran this model for a rumor that society generally had strong positive opinions about. In that scenario, everyone knew about the rumor at around 24 hours and there were approximately 80 spreaders after 24 hours. In this case, nearly everyone knows about the rumor in 10-15 hours and the number of spreaders at the end of the 24 hour period is in the range of 300-400. Thus, we can conclude from our model that controversial rumors spread much faster and more destructively (because of polarization) than rumors that most people can agree on.
 
