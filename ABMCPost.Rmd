@@ -26,9 +26,12 @@ The following is part of our final project for our Mathematical Models in Biolog
 
 In this project, we were tasked with creating an Agent Based Model (ABM) to model the spread of information on Twitter. An ABM is a program that creates a network to model interactions between agents. We created a network using R's igraph package where vertices represent Twitter users, and edges represent the connections between them.     
 
-This specific file models the spread of highly controversial information. In our model, we are accounting for
+This specific file models the spread of highly controversial information. In our model, we are accounting for:      
+    
 1. Every Twitter user has a different opinion about the subject of a tweet. In our model, the stronger their opinion (in support of or against the tweet), the more likely it is they spread the information of the tweet by retweeting or replying.     
+    
 2. A Twitter user's opinion changes slightly to reflect the opinions of people who they follow. In our model, every user's opinion is changed slightly depending on what other people in their network tweet.     
+    
 3. We run the rumor for 24 iterations of rumor spreading, equivalent to 24 hours.
 
 
@@ -94,10 +97,15 @@ grid.arrange(g1,g2,g3,ncol = 2)
 
 ```
 
-Above are the graphs for the three parameters in our model. 
+Above are the graphs for the three parameters in our model.     
+
 1. Every vertex has an initial opinion about the information, and its opinion is randomly assigned as a numeric value selected from the "Distribution of Support" graph.    
-2. Every vertex's opinion changes slightly according to what they have heard from other people. But in real life, some people are more stubborn than others. To account for that, our model assigns us an "Ability to Pressured" factor to each vertex via the Distribution of Pressure graph. Each vertex is randomly assigned a value from that graph, and the closer the value is to 0, the more "stubborn" that vertex is.
-2. Every vertex is connected to number of nodes, n, where n is a randomly selected value from the distribution graphed in "Distribution of Number of Connections." The right skew of this distribution mimics the structure of Twitter where most people have hundreds of followers, but some celebrities have thousands or millions.     
+    
+2. Every vertex's opinion changes slightly according to what they have heard from other people. But in real life, some people are more stubborn than others. To account for that, our model assigns us an "Ability to Pressured" factor to each vertex via the Distribution of Pressure graph. Each vertex is randomly assigned a value from that graph, and the closer the value is to 0, the more "stubborn" that vertex is.    
+    
+3. Every vertex is connected to number of nodes, n, where n is a randomly selected value from the distribution graphed in "Distribution of Number of Connections." The right skew of this distribution mimics the structure of Twitter where most people have hundreds of followers, but some celebrities have thousands or millions.     
+    
+Since we are graphing a controversial piece of information, we have made our support distribution bimodal - to represent two sides of an argument that both have semi-strong opinions about the subject. This is applicable to many real life scenarios, like the 2016 election that divided the USA.     
 
 
 ```{r}
@@ -222,10 +230,22 @@ grid.arrange(g1,g2,g3,g4,g5,g6, ncol=2)
 ```
 
 
-This is perhaps the most interesting version of our model. This bipolar distribution can apply to many situations including the 2016 election, in which the country was divided with strong opinions on either side of the party line, and particularly about comments made by President-Elect Donald Trump.   
+We ran our program with varying initial support distribution corresponding to different types of rumors, and plotted several variables, whose graphs that served as our results. On every graph, the x-axis is “t” for time, in hours. The y-variables change from graph to graph: below, we list each graph in the panel and state what is being plotted.     
 
-
-Applying the model to the American election, the model seems unfortunately accurate. The echo-chamber effect witnessed in the positively disposed model is again present here, but for people on both sides of the aisle. The positive leaning population becomes more positive as time goes on in this rumor, and the negative side also becomes more negative. The average strength of opinion, as depicted by the polarization graph increases rapidly from 0.1 to 0.1675. For comparison, the strength of opinion in the positively displaced society model rose from 0.1 to 0.125. Yet unlike the positively displaced society model, the overall opinion of society does not change. It zig-zags around 0, but never meaningfully increases in any single direction. Thus, society becomes more and more divided with no resolution to their conflict.    
-
-Another interesting observation of this model is the number of spreaders and rate at which people become aware of the rumor. Nearly everyone knows about the rumor within 15 hours, and the number of spreaders by the end of the 24 hour period is near 400. For reference, those same numbers for the positively displaced model are 24 and 80 respectively. Thus, we can conclude from our model that controversial rumors spread much faster and more destructively (because of polarization) than rumors that most people can agree on.
+o	Knowledge of Rumor – This graphs how many people are aware of the rumor at any given time. Two lines are plotted to show how many know and don’t know.     
+    
+o	Number of Spreaders – How many vertices in our network are experiencing spreading events in our network at the end of the round. This corresponds to how many people are spreading the rumor at the end of each hour.   
+    
+o	Overall Support – Graphs the average of every vertex’s support variable. This corresponds to the network’s overall support for the rumor.    
+    
+o	Polarization – Graphs the average of the absolute value of every vertex’s support variable. This corresponds to how strong of an opinion every vertex has about the rumor. The farther this value is from 0, the stronger of an opinion every vertex has.          
+    
+o	Positive Support – Graphs the average support for every vertex that has a positive support value. This models the strength of opinion for those who are in support of the rumor.        
+    
+o	Negative Support – Same as positive support, but graphs the average for all vertices with a negative support value.
+      
+    
+Applying the model to the American election, the model seems unfortunately accurate. The positive leaning population becomes more positive as time goes on in this rumor, and the negative side also becomes more negative. The overall opinion of society, however, does not change. It zig-zags around 0, but never meaningfully increases in any single direction. Thus, society becomes more and more divided with no resolution to their conflict.    
+    
+Another interesting observation of this model is the number of spreaders and rate at which people become aware of the rumor.  We ran this model for a rumor that society generally had strong positive opinions about. In that scenario, everyone knew about the rumor in 24 hours and there were around 80 spreaders after 24 hours. In this case, nearly everyone knows about the rumor in 10-15 hours and the number of spreaders at the end of the 24 hour period is in the range 300-400. Thus, we can conclude from our model that controversial rumors spread much faster and more destructively (because of polarization) than rumors that most people can agree on.
 
